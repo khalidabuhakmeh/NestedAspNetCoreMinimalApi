@@ -1,0 +1,11 @@
+### Get Root
+GET https://localhost:5001/
+
+### Get Todos
+GET https://localhost:5001/todos
+
+### Get Todo By Id
+GET https://localhost:5001/todos/1
+
+### Delete Todo By Id
+DELETE https://localhost:5001/todos/1

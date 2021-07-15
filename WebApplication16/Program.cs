@@ -1,6 +1,7 @@
 using System.Linq;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using WebApplication16;
 using static System.Linq.Enumerable;
@@ -19,7 +20,19 @@ app.Path("/", root =>
     root.Path("todos", todos =>
     {
         todos.MapGet(() => Range(1, 4).Select(i => new Todo(i)));
-        todos.MapGet("{id:int}", () => new Todo(1));
+        todos.Path("{id:int}", todo => 
+        {
+            todo.MapGet(async ctx =>
+            {
+                var id = int.Parse(ctx.Request.RouteValues["id"].ToString());
+                await ctx.Response.WriteAsJsonAsync(new Todo(id));
+            });
+            
+            todo.MapDelete(async ctx =>
+            {
+                ctx.Response.StatusCode = StatusCodes.Status202Accepted;
+            });
+        });
     });
 });
 

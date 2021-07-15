@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
@@ -104,6 +105,28 @@ namespace WebApplication16
             return _app.MapPut(route, requestDelegate);
         }
         
+        public IEndpointConventionBuilder MapPatch(Delegate requestDelegate)
+        {
+            return _app.MapMethods(_baseRoute, new []{ HttpMethods.Patch }, requestDelegate);
+        }
+        
+        public IEndpointConventionBuilder MapPatch(RequestDelegate requestDelegate)
+        {
+            return _app.MapMethods(_baseRoute, new []{ HttpMethods.Patch }, requestDelegate);
+        }
+        
+        public IEndpointConventionBuilder MapPatch(string pattern, RequestDelegate requestDelegate)
+        {
+            var route = Combine(pattern);
+            return _app.MapMethods(route, new []{ HttpMethods.Patch }, requestDelegate);
+        }
+        
+        public IEndpointConventionBuilder MapPatch(string pattern, Delegate requestDelegate)
+        {
+            var route = Combine(pattern);
+            return _app.MapMethods(_baseRoute, new []{ HttpMethods.Patch }, requestDelegate);
+        }
+        
         public IEndpointConventionBuilder MapDelete(Delegate requestDelegate)
         {
             return _app.MapDelete(_baseRoute, requestDelegate);
@@ -124,6 +147,28 @@ namespace WebApplication16
         {
             var route = Combine(pattern);
             return _app.MapDelete(route, requestDelegate);
+        }
+
+        public IEndpointConventionBuilder MapMethods(IEnumerable<string> methods, RequestDelegate requestDelegate)
+        {
+            return _app.MapMethods(_baseRoute, methods, requestDelegate);
+        }
+        
+        public IEndpointConventionBuilder MapMethods(IEnumerable<string> methods, Delegate requestDelegate)
+        {
+            return _app.MapMethods(_baseRoute, methods, requestDelegate);
+        }
+        
+        public IEndpointConventionBuilder MapMethods(string pattern, IEnumerable<string> methods, RequestDelegate requestDelegate)
+        {
+            var route = Combine(pattern);
+            return _app.MapMethods(route, methods, requestDelegate);
+        }
+        
+        public IEndpointConventionBuilder MapMethods(string pattern, IEnumerable<string> methods, Delegate requestDelegate)
+        {
+            var route = Combine(pattern);
+            return _app.MapMethods(route, methods, requestDelegate);
         }
 
         private string Combine(string pattern)
